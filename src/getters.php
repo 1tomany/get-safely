@@ -6,6 +6,7 @@ use OneToMany\Getters\Exception\RuntimeException;
 
 use function get_debug_type;
 use function is_callable;
+use function is_null;
 use function is_string;
 use function sprintf;
 
@@ -38,8 +39,12 @@ function get_string(mixed $value, string|callable $default = ''): string
  */
 function get_string_loose(mixed $value, string|callable $default = ''): string
 {
-    if (is_scalar($value)) {
-        $value = (string) $value;
+    if (true === is_null($value)) {
+        return (string) $value;
+    }
+
+    if (true === is_scalar($value)) {
+        return (string) $value;
     }
 
     return get_string($value, $default);
