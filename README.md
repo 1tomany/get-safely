@@ -7,8 +7,12 @@ composer require 1tomany/get-safely
 ```
 
 ## Functions
-- `get_string(mixed $value, string|callable $default = ''): string`
-- `get_string_loose(mixed $value, string|callable $default = ''): string`
+### `get_string()`
+Returns the value of the first argument if it is a string or implements the `\Stringable` interface, otherwise it returns the value of the `$default` argument. If the `$default` argument is of type `callable`, the `$value` is passed to it and the result of the callable is returned. An exception is thrown if the callable does not return a string.
+
+#### Arguments
+- `mixed $value`
+- `string|callable $default = ''`
 
 ## Examples
 ```php
@@ -17,7 +21,7 @@ composer require 1tomany/get-safely
 use function OneToMany\Getters\get_string;
 use function OneToMany\Getters\get_string_loose;
 
-// get_string(mixed $value, string|callable $default = ''): string
+// get_string() Examples
 get_string(null); // string(0) ""
 get_string('Vic'); // string(3) "Vic"
 get_string(null, 'nope'); // string(4) "nope"
