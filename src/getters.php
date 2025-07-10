@@ -15,7 +15,7 @@ use function sprintf;
 function get_string(mixed $value, string|callable $default = ''): string
 {
     if ($value instanceof \Stringable) {
-        $value = (string) $value;
+        $value = $value->__toString();
     }
 
     if (is_string($value)) {

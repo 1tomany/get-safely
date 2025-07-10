@@ -23,6 +23,25 @@ final class GetStringTest extends TestCase
         $this->assertSame($result, get_string($value));
     }
 
+    public function testGettingStringWithStringableValue(): void
+    {
+        $value = bin2hex(random_bytes(6));
+
+        $stringable = new readonly class($value) implements \Stringable {
+            public function __construct(
+                public string $value,
+            ) {
+            }
+
+            public function __toString(): string
+            {
+                return $this->value;
+            }
+        };
+
+        $this->assertSame($value, get_string($stringable));
+    }
+
     public function testGettingStringWithStringDefault(): void
     {
         $default = bin2hex(random_bytes(6));
@@ -39,15 +58,13 @@ final class GetStringTest extends TestCase
 
     public function testGettingStringWithCallableDefaultOnlyExecutesCallableWhenNecessary(): void
     {
-        $called = false;
+        $called = 0;
 
         get_string('Vic', function (mixed $value) use (&$called): string {
-            $called = true;
-
-            return bin2hex(random_bytes(6));
+            return (string) (++$called);
         });
 
-        $this->assertFalse($called);
+        $this->assertSame(0, $called);
     }
 
     public function testGettingStringWithCallableRequiresCallableToReturnString(): void
@@ -55,6 +72,7 @@ final class GetStringTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The callable must return a string, returned "int" instead.');
 
+        // @phpstan-ignore-next-line
         get_string(null, function (mixed $value): int {
             return random_int(1, PHP_INT_MAX);
         });
