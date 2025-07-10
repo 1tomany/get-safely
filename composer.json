@@ -1,0 +1,51 @@
+{
+    "name": "1tomany/get-safely",
+    "description": "A simple library to safely get scalar types from mixed values",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "keywords": [
+        "types",
+        "data types",
+        "type safety"
+    ],
+    "require": {
+        "php": ">=8.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.82",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "OneToMany\\Getters\\": "src/"
+        },
+        "files": [
+            "src/getters.php"
+        ],
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OneToMany\\Getters\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "fix": "./vendor/bin/php-cs-fixer fix",
+        "stan": "./vendor/bin/phpstan",
+        "test": "./vendor/bin/phpunit"
+    },
+    "authors": [
+        {
+            "name": "Vic Cherubini",
+            "email": "vcherubini@gmail.com"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    }
+}
