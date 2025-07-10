@@ -7,11 +7,19 @@ composer require 1tomany/get-safely
 ```
 
 ## Functions
-### `get_string(mixed $value, string|callable $default = ''): string`
-Returns the value of the first argument if it is a string or implements the `\Stringable` interface, otherwise it returns the value of the `$default` argument. If the `$default` argument is of type `callable`, the `$value` is passed to it and the result of the callable is returned. An exception is thrown if the callable does not return a string.
+### `get_string(): string`
+This function returns the `$value` argument if it is a string or implements the `\Stringable` interface, otherwise it returns the value of the `$default` argument. If the `$default` argument is of type `callable`, the `$value` is passed to it and the result of the callable is returned. An exception is thrown if the callable does not return a string.
 
-### `get_string_loose(mixed $value, string|callable $default = ''): string`
-The first argument is cast to a string if it is a scalar value (`boolean`, `int`, `float`, or `string` in PHP). This method then calls and returns the value from `get_string()`.
+#### Arguments
+- `mixed $value`
+- `string|callable $default = ''`
+
+### `get_string_loose(): string`
+This function is identical to `get_string()` _except_ the `$value` argument is first cast to a string if it is a scalar value (`boolean`, `int`, `float`, or `string` in PHP).
+
+#### Arguments
+- `mixed $value`
+- `string|callable $default = ''`
 
 ## Examples
 ```php
