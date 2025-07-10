@@ -1,6 +1,6 @@
 {
     "name": "1tomany/get-safely",
-    "description": "A simple library to safely get scalar types from mixed values",
+    "description": "A simple library to safely get scalar types from values of unknown origin or type",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "stable",
