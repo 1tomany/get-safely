@@ -46,9 +46,8 @@ get_string(null, fn ($v) => 'callable');
 
 // string(3) "Vic"
 get_string(new class('Vic') implements \Stringable {
-    function __construct(
-        private string $name,
-    ) {
+    function __construct(public readonly string $name)
+    {
     }
 
     public function __toString(): string
