@@ -12,8 +12,8 @@ use function is_string;
  */
 function get_string(mixed $value, string|callable $default = ''): string
 {
-    if (is_string($value)) {
-        return $value;
+    if (is_scalar($value)) {
+        return (string) $value;
     }
 
     if (is_callable($default)) {
