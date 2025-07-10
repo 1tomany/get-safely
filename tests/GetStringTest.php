@@ -2,11 +2,17 @@
 
 namespace OneToMany\Getters\Tests;
 
+use OneToMany\Getters\Exception\RuntimeException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
+use function bin2hex;
 use function OneToMany\Getters\get_string;
+use function random_bytes;
+use function random_int;
+
+use const PHP_INT_MAX;
 
 #[Group('UnitTests')]
 final class GetStringTest extends TestCase
@@ -17,20 +23,57 @@ final class GetStringTest extends TestCase
         $this->assertSame($result, get_string($value));
     }
 
+    public function testGettingStringWithStringDefault(): void
+    {
+        $default = bin2hex(random_bytes(6));
+
+        $this->assertSame($default, get_string(null, $default));
+    }
+
+    public function testGettingStringWithCallableDefault(): void
+    {
+        $default = bin2hex(random_bytes(6));
+
+        $this->assertSame($default, get_string(null, fn ($v) => $default));
+    }
+
+    public function testGettingStringWithCallableDefaultOnlyExecutesCallableWhenNecessary(): void
+    {
+        $called = false;
+
+        get_string('Vic', function (mixed $value) use (&$called): string {
+            $called = true;
+
+            return bin2hex(random_bytes(6));
+        });
+
+        $this->assertFalse($called);
+    }
+
+    public function testGettingStringWithCallableRequiresCallableToReturnString(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The callable must return a string, returned "int" instead.');
+
+        get_string(null, function (mixed $value): int {
+            return random_int(1, PHP_INT_MAX);
+        });
+    }
+
     /**
-     * @return list<list<null|bool|int|float|string|list<int|string>|\stdClass>>
+     * @return list<list<bool|int|float|string|list<int|string>|\stdClass|null>>
      */
     public static function providerValueAndResult(): array
     {
         $provider = [
             [null, ''],
-            [true, '1'],
+            [true, ''],
             [false, ''],
-            [0, '0'],
-            [1, '1'],
-            [1_024, '1024'],
-            [1.1, '1.1'],
-            [3.149, '3.149'],
+            [0, ''],
+            [1, ''],
+            [1_024, ''],
+            [1.1, ''],
+            [3.149, ''],
             ['', ''],
             [' ', ' '],
             ['A', 'A'],
